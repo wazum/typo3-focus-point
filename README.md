@@ -81,6 +81,52 @@ dependencies:
 
 Reads `focusArea` from `sys_file_reference.crop`, computes the focus center, remaps it into cropped-image coordinate space, and returns a CSS `object-position` value used via CSS custom property `--focus-position`.
 
+## CSP-friendly alternative
+
+The default partial emits an inline `style="--focus-position:..."` attribute. Under a strict Content Security Policy that's blocked by `style-src-attr` — and TYPO3 v13+ CSP nonces don't cover attributes, only `<style>`/`<link>` elements. Per-value hashes with `'unsafe-hashes'` aren't practical because the value is computed per image.
+
+Swap the inline style for a data attribute + a small external script. Only `script-src 'self'` is then required.
+
+**Partial** — `Resources/Private/Partials/FocusImage.html`:
+
+```html
+additionalAttributes="{data-focus-position: '{fp:focusPosition(image:image, cropVariant:cropVariant)}'}"
+```
+
+**Script** — `Resources/Public/JavaScript/focus-position.js`:
+
+```js
+(() => {
+  const apply = (el) => {
+    const value = el.dataset.focusPosition;
+    if (value) el.style.setProperty('--focus-position', value);
+  };
+  document.querySelectorAll('[data-focus-position]').forEach(apply);
+
+  new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      for (const node of m.addedNodes) {
+        if (node.nodeType !== 1) continue;
+        if (node.matches?.('[data-focus-position]')) apply(node);
+        node.querySelectorAll?.('[data-focus-position]').forEach(apply);
+      }
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+```
+
+**Include** — TypoScript:
+
+```typoscript
+page.includeJSFooter.focusPosition = EXT:focuspoint_sitepackage/Resources/Public/JavaScript/focus-position.js
+```
+
+Keep a CSS fallback so images stay centered until the script runs:
+
+```css
+.focus-image { object-position: var(--focus-position, 50% 50%); }
+```
+
 ## Running tests
 
 ```bash
