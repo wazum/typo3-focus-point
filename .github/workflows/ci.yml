@@ -1,0 +1,28 @@
+name: CI
+
+on:
+    push:
+        branches: ['main']
+    pull_request:
+        branches: ['main']
+
+jobs:
+    unit-tests:
+        name: PHPUnit
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.4'
+                  extensions: mbstring, xml, json, pdo_sqlite
+                  coverage: none
+
+            - name: Install Composer dependencies
+              run: composer install --no-interaction --prefer-dist
+
+            - name: Run unit tests
+              run: ./vendor/bin/phpunit --bootstrap vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsBootstrap.php packages/focuspoint_sitepackage/Tests/Unit --testdox

@@ -1,0 +1,18 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:fp="http://typo3.org/ns/Vendor/FocuspointSitepackage/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<figure class="focus-figure {cssClass}">
+    <div class="focus-container">
+        <f:image image="{image}"
+                 cropVariant="{cropVariant}"
+                 width="1200"
+                 additionalAttributes="{style: '--focus-position:{fp:focusPosition(image:image, cropVariant:cropVariant)}'}"
+                 class="focus-image"
+                 alt="{image.properties.alternative}" />
+    </div>
+    <f:if condition="{image.properties.description}">
+        <figcaption>{image.properties.description}</figcaption>
+    </f:if>
+</figure>
+</html>

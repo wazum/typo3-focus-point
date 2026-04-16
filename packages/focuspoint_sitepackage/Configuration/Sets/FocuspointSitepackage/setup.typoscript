@@ -1,0 +1,27 @@
+page = PAGE
+page {
+    10 = FLUIDTEMPLATE
+    10 {
+        templateName = Default
+        templateRootPaths {
+            10 = EXT:focuspoint_sitepackage/Resources/Private/Templates/Page/
+        }
+        layoutRootPaths {
+            10 = EXT:focuspoint_sitepackage/Resources/Private/Layouts/Page/
+        }
+        partialRootPaths {
+            10 = EXT:focuspoint_sitepackage/Resources/Private/Partials/
+        }
+        dataProcessing {
+            10 = TYPO3\CMS\Frontend\DataProcessing\MenuProcessor
+            10 {
+                levels = 1
+                as = mainMenu
+            }
+        }
+    }
+
+    includeCSS {
+        website = EXT:focuspoint_sitepackage/Resources/Public/Css/website.css
+    }
+}

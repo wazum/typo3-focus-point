@@ -1,0 +1,15 @@
+base: 'https://typo3-focus-point.ddev.site'
+dependencies:
+  - vendor/focuspoint-sitepackage
+errorHandling: {  }
+languages:
+  -
+    title: English
+    enabled: true
+    languageId: 0
+    base: /
+    locale: en_US.UTF-8
+    navigationTitle: English
+    flag: us
+rootPageId: 1
+routes: {  }

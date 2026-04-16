@@ -1,0 +1,25 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# TYPO3
+/public/_assets/
+/public/_assets_install/
+/public/fileadmin/
+/public/typo3/
+/public/typo3conf/
+/public/typo3temp/
+/public/index.php
+/public/.htaccess
+/var/
+/vendor/
+/config/system/settings.php
+composer.lock
+
+# Node (docs-demo)
+docs-demo/node_modules/
+docs-demo/dist/
+
+# IDE
+.idea/
+.vscode/
